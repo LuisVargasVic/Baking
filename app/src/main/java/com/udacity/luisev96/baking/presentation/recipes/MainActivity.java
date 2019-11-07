@@ -1,4 +1,4 @@
-package com.udacity.luisev96.baking.presentation;
+package com.udacity.luisev96.baking.presentation.recipes;
 
 import android.content.BroadcastReceiver;
 import android.content.IntentFilter;

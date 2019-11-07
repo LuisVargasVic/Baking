@@ -6,7 +6,7 @@ import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 
-import static com.udacity.luisev96.baking.presentation.MainActivity.setMainConnection;
+import static com.udacity.luisev96.baking.presentation.recipes.MainActivity.setMainConnection;
 import static com.udacity.luisev96.baking.remote.tasks.BakingTask.setConnection;
 
 public class MainReceiver extends BroadcastReceiver {
