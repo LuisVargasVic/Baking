@@ -34,4 +34,7 @@ public interface BakingDao {
 
     @Query("DELETE FROM DatabaseStep")
     void deleteSteps();
+
+    @Query("SELECT * FROM DatabaseStep WHERE recipe_id = :recipeId AND step = :step_id")
+    LiveData<DatabaseStep> getStep(int recipeId, int step_id);
 }

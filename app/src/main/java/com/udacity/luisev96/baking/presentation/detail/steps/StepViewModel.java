@@ -1,4 +1,4 @@
-package com.udacity.luisev96.baking.presentation.detail.list;
+package com.udacity.luisev96.baking.presentation.detail.steps;
 
 import android.app.Application;
 import android.util.Log;
@@ -10,27 +10,25 @@ import com.udacity.luisev96.baking.data.BakingRepository;
 import com.udacity.luisev96.baking.database.BakingDatabase;
 import com.udacity.luisev96.baking.domain.Step;
 
-import java.util.List;
+public class StepViewModel extends AndroidViewModel {
 
-public class ListViewModel extends AndroidViewModel {
-
-    private static final String TAG = ListViewModel.class.getSimpleName();
+    private static final String TAG = StepViewModel.class.getSimpleName();
     private BakingRepository repository;
-    private LiveData<List<Step>> steps;
+    private LiveData<Step> step;
 
-    public ListViewModel(Application application) {
+    public StepViewModel(Application application) {
         super(application);
         BakingDatabase database = BakingDatabase.getInstance(this.getApplication());
-        Log.d(TAG, "Actively retrieving the steps from the DataBase");
+        Log.d(TAG, "Actively retrieving the step from the DataBase");
         repository = new BakingRepository(database);
     }
 
-    void init(int recipe_id) {
-        steps = repository.getSteps(recipe_id);
+    void init(int recipe_id, int step_id) {
+        step = repository.getStep(recipe_id, step_id);
     }
 
-    LiveData<List<Step>> getSteps() {
-        return steps;
+    LiveData<Step> getStep() {
+        return step;
     }
 
 }

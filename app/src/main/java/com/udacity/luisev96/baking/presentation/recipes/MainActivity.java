@@ -30,7 +30,6 @@ public class MainActivity extends AppCompatActivity implements RemoteListener, C
     private BroadcastReceiver mReceiver;
     private MainAdapter mAdapter;
     private static ConnectionListener connectionListener;
-    private boolean mConnection;
     private static final String TAG = MainActivity.class.getSimpleName();
 
     @Override
@@ -42,7 +41,6 @@ public class MainActivity extends AppCompatActivity implements RemoteListener, C
         mReceiver = new MainReceiver();
         registerReceiver(mReceiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
         connectionListener = this;
-        connection(mConnection);
 
         // Set adapter before populating it
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
@@ -53,7 +51,6 @@ public class MainActivity extends AppCompatActivity implements RemoteListener, C
 
         // Make requests
         viewModel = ViewModelProviders.of(this).get(MainViewModel.class);
-        viewModel.refresh( this);
     }
 
     public static void setMainConnection(Boolean connection) {
@@ -62,10 +59,9 @@ public class MainActivity extends AppCompatActivity implements RemoteListener, C
 
     @Override
     public void connection(Boolean connection) {
-        mConnection = connection;
+        viewModel.refresh( this);
         if (connection) {
             activityMainBinding.message.setText(R.string.recipes_empty);
-            viewModel.refresh( this);
         } else {
             activityMainBinding.message.setText(R.string.recipes_connection);
         }

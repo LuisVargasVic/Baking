@@ -41,7 +41,7 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ListViewHolder
         if (position == 0) {
             holder.bind(position);
         } else {
-            holder.bind(mStepsList.get(position - 1), position);
+            holder.bind(mStepsList.get(position - 1));
         }
     }
 
@@ -52,7 +52,7 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ListViewHolder
 
     @Override
     public int getItemCount() {
-        return mStepsList.size();
+        return mStepsList.size() + 1;
     }
 
     class ListViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
@@ -67,21 +67,21 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ListViewHolder
             mRecipeItemBinding.mcvRecipes.setOnClickListener(this);
         }
 
-        void bind(Step step, int position) {
+        void bind(Step step) {
             mStep = step;
 
             mRecipeItemBinding.tvName.setText(String.valueOf(step.getShortDescription()));
-            mPosition = position;
+            mPosition = step.getStep();
         }
 
         void bind(int position) {
             mRecipeItemBinding.tvName.setText(R.string.ingredients);
-            mPosition = position;
+            mPosition = position - 1;
         }
 
         @Override
         public void onClick(View v) {
-            mCallback.onItemSelected(mPosition);
+            mCallback.onItemSelected(mPosition, getItemCount());
         }
     }
 }

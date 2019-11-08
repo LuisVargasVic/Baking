@@ -71,7 +71,7 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.RecipesViewHol
         @Override
         public void onClick(View view) {
             Intent intent = new Intent(mContext, MasterDetailActivity.class);
-            intent.putExtra(RECIPE_ID, mRecipe.getId());
+            intent.putExtra(RECIPE_ID, mRecipe);
             mContext.startActivity(intent);
         }
     }

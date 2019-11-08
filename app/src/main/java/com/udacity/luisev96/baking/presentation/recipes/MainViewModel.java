@@ -27,7 +27,7 @@ public class MainViewModel extends AndroidViewModel {
         recipes = repository.getRecipes();
     }
 
-    public void refresh(RemoteListener remoteListener) {
+    void refresh(RemoteListener remoteListener) {
         repository.refresh(remoteListener);
     }
 

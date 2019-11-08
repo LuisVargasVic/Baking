@@ -10,7 +10,6 @@ import com.udacity.luisev96.baking.database.DatabaseStep;
 import com.udacity.luisev96.baking.domain.Ingredient;
 import com.udacity.luisev96.baking.domain.Recipe;
 import com.udacity.luisev96.baking.domain.Step;
-import com.udacity.luisev96.baking.remote.listeners.ConnectionListener;
 import com.udacity.luisev96.baking.remote.listeners.RemoteListener;
 import com.udacity.luisev96.baking.utils.JsonUtils;
 
@@ -23,27 +22,21 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.List;
 
-public class BakingTask extends AsyncTask<URL, Void, Boolean> implements ConnectionListener {
+public class BakingTask extends AsyncTask<URL, Void, Boolean> {
 
     private BakingDatabase mBakingDatabase;
     private RemoteListener mRemoteListener;
-    private static ConnectionListener connectionListener;
     private static final String TAG = BakingTask.class.getSimpleName();
 
     public BakingTask(BakingDatabase bakingDatabase, RemoteListener remoteListener) {
         mBakingDatabase = bakingDatabase;
         mRemoteListener = remoteListener;
-        connectionListener = this;
     }
 
     @Override
     protected void onPreExecute() {
         super.onPreExecute();
         mRemoteListener.preExecute();
-    }
-
-    public static void setConnection(Boolean connection) {
-        connectionListener.connection(connection);
     }
 
     @Override
@@ -116,13 +109,6 @@ public class BakingTask extends AsyncTask<URL, Void, Boolean> implements Connect
     @Override
     protected void onPostExecute(Boolean data) {
         mRemoteListener.postExecute(data);
-    }
-
-    @Override
-    public void connection(Boolean connection) {
-        if (!connection) {
-            this.cancel(true);
-        }
     }
 
     @Override

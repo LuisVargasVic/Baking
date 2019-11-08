@@ -36,7 +36,7 @@ public class ListFragment extends Fragment {
 
     // OnImageClickListener interface, calls a method in the host activity named onImageSelected
     public interface OnItemClickListener {
-        void onItemSelected(int position);
+        void onItemSelected(int position, int total);
     }
 
     // Override onAttach to make sure that the container activity has implemented the callback

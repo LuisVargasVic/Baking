@@ -72,7 +72,7 @@ public class BakingRepository {
                         for (int i = 0; i < databaseSteps.size(); i++) {
                             DatabaseStep databaseStep = databaseSteps.get(i);
                             steps.add(new Step(
-                                            databaseStep.getId(),
+                                            databaseStep.getStep(),
                                             databaseStep.getShortDescription(),
                                             databaseStep.getDescription(),
                                             databaseStep.getVideo_url(),
@@ -106,6 +106,27 @@ public class BakingRepository {
                         }
 
                         return ingredients;
+                    }
+                });
+    }
+
+    public LiveData<Step> getStep(int recipe_id, int step_id) {
+        return Transformations.map(mBakingDatabase.bakingDao().getStep(recipe_id, step_id),
+                new Function<DatabaseStep, Step>() {
+                    @Override
+                    public Step apply(DatabaseStep databaseStep) {
+                        if (databaseStep != null) {
+                            return new Step(
+                                    databaseStep.getStep(),
+                                    databaseStep.getShortDescription(),
+                                    databaseStep.getDescription(),
+                                    databaseStep.getVideo_url(),
+                                    databaseStep.getThumbnail_url(),
+                                    databaseStep.getRecipe_id()
+                            );
+                        } else {
+                            return null;
+                        }
                     }
                 });
     }
