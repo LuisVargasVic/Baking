@@ -74,7 +74,6 @@ public class StepFragment extends Fragment implements ExoPlayer.EventListener {
         assert getArguments() != null;
         int recipeId = getArguments().getInt(RECIPE_ID);
         int stepId = getArguments().getInt(POSITION);
-        Log.wtf(TAG, "Step " + stepId);
 
         StepViewModel viewModel = ViewModelProviders.of(this).get(StepViewModel.class);
         viewModel.init(recipeId, stepId);

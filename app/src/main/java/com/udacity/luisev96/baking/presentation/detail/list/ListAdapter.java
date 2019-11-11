@@ -9,7 +9,7 @@ import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.udacity.luisev96.baking.R;
-import com.udacity.luisev96.baking.databinding.RecipeItemBinding;
+import com.udacity.luisev96.baking.databinding.ListItemBinding;
 import com.udacity.luisev96.baking.domain.Step;
 
 import java.util.ArrayList;
@@ -32,7 +32,7 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ListViewHolder
     @NonNull
     @Override
     public ListViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        RecipeItemBinding onCreateViewHolder = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()), R.layout.recipe_item, parent, false);
+        ListItemBinding onCreateViewHolder = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()), R.layout.list_item, parent, false);
         return new ListViewHolder(onCreateViewHolder);
     }
 
@@ -57,25 +57,24 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ListViewHolder
 
     class ListViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-        RecipeItemBinding mRecipeItemBinding;
+        ListItemBinding mListItemBinding;
         Step mStep;
         int mPosition = 0;
 
-        ListViewHolder(@NonNull RecipeItemBinding recipeItemBinding) {
-            super(recipeItemBinding.getRoot());
-            mRecipeItemBinding = recipeItemBinding;
-            mRecipeItemBinding.mcvRecipes.setOnClickListener(this);
+        ListViewHolder(@NonNull ListItemBinding listItemBinding) {
+            super(listItemBinding.getRoot());
+            mListItemBinding = listItemBinding;
+            mListItemBinding.mcvList.setOnClickListener(this);
         }
 
         void bind(Step step) {
             mStep = step;
-
-            mRecipeItemBinding.tvName.setText(String.valueOf(step.getShortDescription()));
+            mListItemBinding.tvName.setText(step.getShortDescription());
             mPosition = step.getStep();
         }
 
         void bind(int position) {
-            mRecipeItemBinding.tvName.setText(R.string.ingredients);
+            mListItemBinding.tvName.setText(R.string.ingredients);
             mPosition = position - 1;
         }
 

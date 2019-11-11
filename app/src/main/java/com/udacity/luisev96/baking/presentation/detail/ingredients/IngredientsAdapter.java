@@ -8,7 +8,7 @@ import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.udacity.luisev96.baking.R;
-import com.udacity.luisev96.baking.databinding.RecipeItemBinding;
+import com.udacity.luisev96.baking.databinding.IngredientItemBinding;
 import com.udacity.luisev96.baking.domain.Ingredient;
 
 import java.util.ArrayList;
@@ -30,7 +30,7 @@ public class IngredientsAdapter extends RecyclerView.Adapter<IngredientsAdapter.
     @NonNull
     @Override
     public ListViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        RecipeItemBinding onCreateViewHolder = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()), R.layout.recipe_item, parent, false);
+        IngredientItemBinding onCreateViewHolder = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()), R.layout.ingredient_item, parent, false);
         return new ListViewHolder(onCreateViewHolder);
     }
 
@@ -51,17 +51,19 @@ public class IngredientsAdapter extends RecyclerView.Adapter<IngredientsAdapter.
 
     class ListViewHolder extends RecyclerView.ViewHolder {
 
-        RecipeItemBinding mRecipeItemBinding;
+        IngredientItemBinding mIngredientItemBinding;
         Ingredient mIngredient;
 
-        ListViewHolder(@NonNull RecipeItemBinding recipeItemBinding) {
-            super(recipeItemBinding.getRoot());
-            mRecipeItemBinding = recipeItemBinding;
+        ListViewHolder(@NonNull IngredientItemBinding ingredientItemBinding) {
+            super(ingredientItemBinding.getRoot());
+            mIngredientItemBinding = ingredientItemBinding;
         }
 
         void bind(Ingredient ingredient) {
             mIngredient = ingredient;
-            mRecipeItemBinding.tvName.setText(String.valueOf(ingredient.getIngredient()));
+            mIngredientItemBinding.tvName.setText(ingredient.getIngredient());
+            mIngredientItemBinding.tvQuantity.setText(String.valueOf(ingredient.getQuantity()));
+            mIngredientItemBinding.tvMeasure.setText(ingredient.getMeasure());
         }
     }
 }

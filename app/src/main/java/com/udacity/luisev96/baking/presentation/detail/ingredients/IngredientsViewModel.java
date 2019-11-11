@@ -25,11 +25,11 @@ public class IngredientsViewModel extends AndroidViewModel {
         repository = new BakingRepository(database);
     }
 
-    public void init(int recipe_id) {
+    void init(int recipe_id) {
         ingredients = repository.getIngredients(recipe_id);
     }
 
-    public LiveData<List<Ingredient>> getIngredients() {
+    LiveData<List<Ingredient>> getIngredients() {
         return ingredients;
     }
 

@@ -31,7 +31,7 @@ public class MainViewModel extends AndroidViewModel {
         repository.refresh(remoteListener);
     }
 
-    public LiveData<List<Recipe>> getRecipes() {
+    LiveData<List<Recipe>> getRecipes() {
         return recipes;
     }
 

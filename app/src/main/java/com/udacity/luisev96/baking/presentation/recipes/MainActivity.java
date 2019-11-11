@@ -12,6 +12,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.udacity.luisev96.baking.R;
@@ -44,8 +45,13 @@ public class MainActivity extends AppCompatActivity implements RemoteListener, C
         connectionListener = this;
 
         // Set adapter before populating it
-        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
-        activityMainBinding.rvRecipes.setLayoutManager(layoutManager);
+        if (getString(R.string.screen).equals("Phone")) {
+            LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+            activityMainBinding.rvRecipes.setLayoutManager(layoutManager);
+        } else {
+            GridLayoutManager layoutManager = new GridLayoutManager(this, 2);
+            activityMainBinding.rvRecipes.setLayoutManager(layoutManager);
+        }
         activityMainBinding.rvRecipes.setHasFixedSize(true);
         mAdapter = new MainAdapter(this);
         activityMainBinding.rvRecipes.setAdapter(mAdapter);

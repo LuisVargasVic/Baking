@@ -64,8 +64,7 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.RecipesViewHol
 
         void bind(Recipe recipe) {
             mRecipe = recipe;
-
-            mRecipeItemBinding.tvName.setText(String.valueOf(recipe.getName()));
+            mRecipeItemBinding.tvName.setText(recipe.getName());
         }
 
         @Override
