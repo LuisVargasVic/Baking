@@ -17,6 +17,24 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
+
+        <receiver android:name=".utils.WidgetProvider">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/widget_info" />
+        </receiver>
+
+        <service
+            android:name=".utils.ListWidgetService"
+            android:permission="android.permission.BIND_REMOTEVIEWS" />
+
+        <service
+            android:name=".utils.IngredientsService" />
+
         <activity android:name=".presentation.detail.DetailActivity" />
         <activity android:name=".presentation.detail.MasterDetailActivity" />
         <activity android:name=".presentation.recipes.MainActivity">
