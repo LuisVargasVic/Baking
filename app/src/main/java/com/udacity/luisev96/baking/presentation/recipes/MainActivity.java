@@ -36,6 +36,7 @@ public class MainActivity extends AppCompatActivity implements RemoteListener, C
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         activityMainBinding = DataBindingUtil.setContentView(this, R.layout.activity_main);
+        setSupportActionBar(activityMainBinding.toolbar);
 
         // Initialize connection receiver before making requests
         mReceiver = new MainReceiver();

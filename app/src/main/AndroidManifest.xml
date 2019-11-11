@@ -17,7 +17,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".presentation.detail.DetailActivity"></activity>
+        <activity android:name=".presentation.detail.DetailActivity" />
         <activity android:name=".presentation.detail.MasterDetailActivity" />
         <activity android:name=".presentation.recipes.MainActivity">
             <intent-filter>

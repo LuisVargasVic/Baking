@@ -32,7 +32,7 @@ public class MasterDetailActivity extends AppCompatActivity implements ListFragm
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ActivityMasterDetailBinding activityMasterDetailBinding = DataBindingUtil.setContentView(this, R.layout.activity_master_detail);
-
+        setSupportActionBar(activityMasterDetailBinding.toolbar);
         if (savedInstanceState != null) recipe = (Recipe) savedInstanceState.getSerializable(RECIPE_ID);
         else if (getIntent() != null)
             if (getIntent().hasExtra(RECIPE_ID)) recipe = (Recipe) getIntent().getSerializableExtra(RECIPE_ID);

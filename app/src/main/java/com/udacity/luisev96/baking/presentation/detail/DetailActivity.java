@@ -20,7 +20,7 @@ import static com.udacity.luisev96.baking.presentation.detail.MasterDetailActivi
 
 public class DetailActivity extends AppCompatActivity {
 
-    private ActivityDetailBinding activityDetailBinding;
+    public ActivityDetailBinding activityDetailBinding;
     boolean ingredients;
     int position;
     int recipeId;
@@ -30,7 +30,7 @@ public class DetailActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         activityDetailBinding = DataBindingUtil.setContentView(this, R.layout.activity_detail);
-
+        setSupportActionBar(activityDetailBinding.toolbar);
         if (savedInstanceState != null) {
             ingredients = savedInstanceState.getBoolean(INGREDIENTS);
             position = savedInstanceState.getInt(POSITION);
@@ -69,7 +69,7 @@ public class DetailActivity extends AppCompatActivity {
 
     private void navigate() {
         FragmentManager fragmentManager = getSupportFragmentManager();
-        if (position == - 1) {
+        if (position == -1) {
             activityDetailBinding.bBack.setVisibility(View.INVISIBLE);
         } else if (position == total - 2) {
             activityDetailBinding.bNext.setVisibility(View.INVISIBLE);
