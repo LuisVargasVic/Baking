@@ -63,6 +63,6 @@ public class IngredientsService extends IntentService {
         //Trigger data update to handle the ListView widgets and force a data refresh
         appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetIds, R.id.list_view);
         //Now update all widgets
-        WidgetProvider.updateWidgets(IngredientsService.this, appWidgetManager, appWidgetIds, recipe);
+        WidgetProvider.updateWidget(IngredientsService.this, appWidgetManager, recipe.getApp_widget_id(), recipe);
     }
 }

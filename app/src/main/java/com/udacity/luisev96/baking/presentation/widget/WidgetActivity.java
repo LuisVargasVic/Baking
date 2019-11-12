@@ -2,7 +2,6 @@ package com.udacity.luisev96.baking.presentation.widget;
 
 import android.appwidget.AppWidgetManager;
 import android.content.BroadcastReceiver;
-import android.content.ComponentName;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.net.ConnectivityManager;
@@ -125,8 +124,7 @@ public class WidgetActivity extends AppCompatActivity implements RemoteListener,
     @Override
     public void postWidgetExecute(Recipe recipe) {
         AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(this);
-        int[] appWidgetIds = appWidgetManager.getAppWidgetIds(new ComponentName(this, WidgetProvider.class));
-        WidgetProvider.updateWidgets(this, appWidgetManager, appWidgetIds, recipe);
+        WidgetProvider.updateWidget(this, appWidgetManager, mAppWidgetId, recipe);
         Intent widgetIntent = new Intent();
         widgetIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, mAppWidgetId);
         setResult(RESULT_OK, widgetIntent);

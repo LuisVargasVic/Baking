@@ -59,7 +59,7 @@ class ListRemoteViewsFactory implements RemoteViewsService.RemoteViewsFactory {
                             AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(mContext);
                             int[] appWidgetIds = appWidgetManager.getAppWidgetIds(new ComponentName(mContext, WidgetProvider.class));
                             appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetIds, R.id.list_view);
-                            WidgetProvider.updateWidgets(mContext, appWidgetManager, appWidgetIds, recipe);
+                            WidgetProvider.updateWidget(mContext, appWidgetManager, recipe.getApp_widget_id(), recipe);
                         }
                     });
                 }

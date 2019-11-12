@@ -28,17 +28,11 @@ public class WidgetProvider extends AppWidgetProvider {
     private static final String TAG = WidgetProvider.class.getSimpleName();
 
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
-    static void updateWidget(Context context, AppWidgetManager appWidgetManager, int appWidgetId, Recipe recipe) {
+    public static void updateWidget(Context context, AppWidgetManager appWidgetManager, int appWidgetId, Recipe recipe) {
         // Get current width to decide on single plant vs garden grid view
         RemoteViews rv;
         rv = getRecyclerRemoteView(context, recipe);
         appWidgetManager.updateAppWidget(appWidgetId, rv);
-    }
-
-    public static void updateWidgets(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds, Recipe recipe) {
-        for (int appWidgetId : appWidgetIds) {
-            updateWidget(context, appWidgetManager, appWidgetId, recipe);
-        }
     }
 
     /**
