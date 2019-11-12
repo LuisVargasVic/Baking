@@ -6,12 +6,18 @@ import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Build;
+import android.util.Log;
 import android.widget.RemoteViews;
 
-import com.udacity.luisev96.baking.R;
+import androidx.annotation.Nullable;
+import androidx.lifecycle.Observer;
 
-import static com.udacity.luisev96.baking.presentation.detail.MasterDetailActivity.RECIPE_ID;
+import com.udacity.luisev96.baking.R;
+import com.udacity.luisev96.baking.data.BakingRepository;
+import com.udacity.luisev96.baking.database.BakingDatabase;
+import com.udacity.luisev96.baking.domain.Recipe;
 
 /**
  * An {@link IntentService} subclass for handling asynchronous task requests in
@@ -19,33 +25,36 @@ import static com.udacity.luisev96.baking.presentation.detail.MasterDetailActivi
  */
 public class WidgetProvider extends AppWidgetProvider {
 
+    private static final String TAG = WidgetProvider.class.getSimpleName();
+
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
-    static void updateWidget(Context context, AppWidgetManager appWidgetManager, int recipeId, int appWidgetId) {
+    static void updateWidget(Context context, AppWidgetManager appWidgetManager, int appWidgetId, Recipe recipe) {
         // Get current width to decide on single plant vs garden grid view
         RemoteViews rv;
-        rv = getRecyclerRemoteView(context, recipeId);
+        rv = getRecyclerRemoteView(context, recipe);
         appWidgetManager.updateAppWidget(appWidgetId, rv);
-
     }
 
-    public static void updateWidgets(Context context, AppWidgetManager appWidgetManager, int recipeId, int[] appWidgetIds) {
+    public static void updateWidgets(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds, Recipe recipe) {
         for (int appWidgetId : appWidgetIds) {
-            updateWidget(context, appWidgetManager, recipeId, appWidgetId);
+            updateWidget(context, appWidgetManager, appWidgetId, recipe);
         }
     }
 
     /**
-     * Creates and returns the RemoteViews to be displayed in the RecyclerView mode widget
+     * Creates and returns the RemoteViews to be displayed in the ListView mode widget
      *
      * @param context The context
-     * @param id
-     * @return The RemoteViews for the RecyclerView mode widget
+     * @return The RemoteViews for the ListView mode widget
      */
-    private static RemoteViews getRecyclerRemoteView(Context context, int id) {
+    private static RemoteViews getRecyclerRemoteView(Context context, Recipe recipe) {
+        Log.wtf("recipe", recipe.getName());
+        Log.wtf("appWid", String.valueOf(recipe.getApp_widget_id()));
         RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.widget_list_view);
         // Set the ListWidgetService intent to act as the adapter for the ListView
         Intent intent = new Intent(context, ListWidgetService.class);
-        intent.putExtra(RECIPE_ID, id);
+        intent.setData(Uri.fromParts("content", String.valueOf(recipe.getApp_widget_id()), null));
+        views.setTextViewText(R.id.tv_recipe_name, recipe.getName());
         views.setRemoteAdapter(R.id.list_view, intent);
         // Handle empty ingredients
         views.setEmptyView(R.id.list_view, R.id.empty_view);
@@ -53,9 +62,20 @@ public class WidgetProvider extends AppWidgetProvider {
     }
 
     @Override
-    public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
-        for (int appWidgetId : appWidgetIds) {
-            IngredientsService.startActionUpdateWidgets(context, appWidgetId);
+    public void onUpdate(final Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
+        for (final int appWidgetId : appWidgetIds) {
+            BakingDatabase database = BakingDatabase.getInstance(context);
+            Log.d(TAG, "Actively retrieving the ingredients from the DataBase");
+            BakingRepository repository = new BakingRepository(database);
+            repository.getRecipe(appWidgetId).observeForever(new Observer<Recipe>() {
+                @Override
+                public void onChanged(@Nullable Recipe recipe) {
+                    if (recipe != null) {
+                        IngredientsService.startActionUpdateWidgets(context, appWidgetId, recipe);
+                    }
+                }
+            });
+
         }
     }
 

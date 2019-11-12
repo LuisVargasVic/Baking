@@ -60,7 +60,8 @@ public class BakingTask extends AsyncTask<URL, Void, Boolean> {
                     Recipe recipe = recipes.get(i);
                     final DatabaseRecipe databaseRecipe = new DatabaseRecipe(
                             recipe.getId(),
-                            recipe.getName()
+                            recipe.getName(),
+                            0
                     );
                     mBakingDatabase.bakingDao().insertRecipe(databaseRecipe);
                 }

@@ -12,7 +12,9 @@ import com.udacity.luisev96.baking.domain.Ingredient;
 import com.udacity.luisev96.baking.domain.Recipe;
 import com.udacity.luisev96.baking.domain.Step;
 import com.udacity.luisev96.baking.remote.listeners.RemoteListener;
+import com.udacity.luisev96.baking.remote.listeners.WidgetListener;
 import com.udacity.luisev96.baking.remote.tasks.BakingTask;
+import com.udacity.luisev96.baking.remote.tasks.WidgetTask;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -41,6 +43,10 @@ public class BakingRepository {
         new BakingTask(mBakingDatabase, remoteListener).execute(finalUrl);
     }
 
+    public void insertWidget(Recipe recipe, WidgetListener widgetListener) {
+        new WidgetTask(mBakingDatabase, widgetListener).execute(recipe);
+    }
+
     public LiveData<List<Recipe>> getRecipes() {
         return Transformations.map(mBakingDatabase.bakingDao().getRecipes(),
                 new Function<List<DatabaseRecipe>, List<Recipe>>() {
@@ -52,7 +58,8 @@ public class BakingRepository {
                             DatabaseRecipe databaseRecipe = databaseRecipes.get(i);
                             recipes.add(new Recipe(
                                             databaseRecipe.getId(),
-                                            databaseRecipe.getName()
+                                            databaseRecipe.getName(),
+                                            databaseRecipe.getApp_widget_id()
                                     )
                             );
                         }
@@ -123,6 +130,24 @@ public class BakingRepository {
                                     databaseStep.getVideo_url(),
                                     databaseStep.getThumbnail_url(),
                                     databaseStep.getRecipe_id()
+                            );
+                        } else {
+                            return null;
+                        }
+                    }
+                });
+    }
+
+    public LiveData<Recipe> getRecipe(int appWidgetId) {
+        return Transformations.map(mBakingDatabase.bakingDao().getRecipe(appWidgetId),
+                new Function<DatabaseRecipe, Recipe>() {
+                    @Override
+                    public Recipe apply(DatabaseRecipe databaseRecipe) {
+                        if (databaseRecipe != null) {
+                            return new Recipe(
+                                    databaseRecipe.getId(),
+                                    databaseRecipe.getName(),
+                                    databaseRecipe.getApp_widget_id()
                             );
                         } else {
                             return null;

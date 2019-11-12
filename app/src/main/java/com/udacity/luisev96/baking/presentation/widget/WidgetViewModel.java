@@ -1,4 +1,4 @@
-package com.udacity.luisev96.baking.presentation.recipes;
+package com.udacity.luisev96.baking.presentation.widget;
 
 import android.app.Application;
 import android.util.Log;
@@ -10,16 +10,17 @@ import com.udacity.luisev96.baking.data.BakingRepository;
 import com.udacity.luisev96.baking.database.BakingDatabase;
 import com.udacity.luisev96.baking.domain.Recipe;
 import com.udacity.luisev96.baking.remote.listeners.RemoteListener;
+import com.udacity.luisev96.baking.remote.listeners.WidgetListener;
 
 import java.util.List;
 
-public class MainViewModel extends AndroidViewModel {
+public class WidgetViewModel extends AndroidViewModel {
 
-    private static final String TAG = MainViewModel.class.getSimpleName();
+    private static final String TAG = WidgetViewModel.class.getSimpleName();
     private BakingRepository repository;
     private LiveData<List<Recipe>> recipes;
 
-    public MainViewModel(Application application) {
+    public WidgetViewModel(Application application) {
         super(application);
         BakingDatabase database = BakingDatabase.getInstance(this.getApplication());
         Log.d(TAG, "Actively retrieving the recipes from the DataBase");
@@ -29,6 +30,10 @@ public class MainViewModel extends AndroidViewModel {
 
     public void refresh(RemoteListener remoteListener) {
         repository.refresh(remoteListener);
+    }
+
+    public void insertWidget(Recipe recipe, WidgetListener widgetListener) {
+        repository.insertWidget(recipe, widgetListener);
     }
 
     public LiveData<List<Recipe>> getRecipes() {

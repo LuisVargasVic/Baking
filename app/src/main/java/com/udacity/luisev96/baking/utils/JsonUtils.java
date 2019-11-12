@@ -33,7 +33,7 @@ public class JsonUtils {
                 JSONObject recipe = objects.getJSONObject(i);
                 int id = recipe.getInt(KEY_ID);
                 String name = recipe.getString(KEY_NAME);
-                recipes.add(new Recipe(id, name));
+                recipes.add(new Recipe(id, name, 0));
             }
         } catch (JSONException e) {
             e.printStackTrace();

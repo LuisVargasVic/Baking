@@ -14,54 +14,59 @@ import com.udacity.luisev96.baking.R;
 import com.udacity.luisev96.baking.data.BakingRepository;
 import com.udacity.luisev96.baking.database.BakingDatabase;
 import com.udacity.luisev96.baking.domain.Ingredient;
+import com.udacity.luisev96.baking.domain.Recipe;
 
 import java.util.List;
-
-import static com.udacity.luisev96.baking.presentation.detail.MasterDetailActivity.RECIPE_ID;
 
 public class ListWidgetService extends RemoteViewsService {
     @Override
     public RemoteViewsFactory onGetViewFactory(Intent intent) {
-        int recipe_id = intent.getIntExtra(RECIPE_ID, -1);
-        return new ListRemoteViewsFactory(this.getApplicationContext(), recipe_id);
+        int appWidgetId = Integer.valueOf(intent.getData().getSchemeSpecificPart());
+        return new ListRemoteViewsFactory(this.getApplicationContext(), appWidgetId);
     }
 }
 
 class ListRemoteViewsFactory implements RemoteViewsService.RemoteViewsFactory {
 
     private static final String TAG = ListRemoteViewsFactory.class.getSimpleName();
-    private final int mRecipeId;
+    private int mAppWidgetId;
     private Context mContext;
     private List<Ingredient> mIngredients;
 
-    ListRemoteViewsFactory(Context applicationContext, int recipe_id) {
+    ListRemoteViewsFactory(Context applicationContext, int appWidgetId) {
         mContext = applicationContext;
-        mRecipeId = recipe_id;
+        mAppWidgetId = appWidgetId;
     }
 
     @Override
     public void onCreate() {
-        BakingRepository repository;
+        final BakingRepository repository;
 
         BakingDatabase database = BakingDatabase.getInstance(mContext);
         Log.d(TAG, "Actively retrieving the ingredients from the DataBase");
         repository = new BakingRepository(database);
 
-        repository.getIngredients(mRecipeId).observeForever(new Observer<List<Ingredient>>() {
-
+        repository.getRecipe(mAppWidgetId).observeForever(new Observer<Recipe>() {
             @Override
-            public void onChanged(List<Ingredient> ingredients) {
-                mIngredients = ingredients;
+            public void onChanged(final Recipe recipe) {
+                if (recipe != null) {
+                    repository.getIngredients(recipe.getId()).observeForever(new Observer<List<Ingredient>>() {
 
-                AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(mContext);
-                int[] appWidgetIds = appWidgetManager.getAppWidgetIds(new ComponentName(mContext, WidgetProvider.class));
-                appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetIds, R.id.list_view);
-                WidgetProvider.updateWidgets(mContext, appWidgetManager, mRecipeId, appWidgetIds);
+                        @Override
+                        public void onChanged(List<Ingredient> ingredients) {
+                            mIngredients = ingredients;
+
+                            AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(mContext);
+                            int[] appWidgetIds = appWidgetManager.getAppWidgetIds(new ComponentName(mContext, WidgetProvider.class));
+                            appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetIds, R.id.list_view);
+                            WidgetProvider.updateWidgets(mContext, appWidgetManager, appWidgetIds, recipe);
+                        }
+                    });
+                }
             }
         });
     }
 
-    //called on start and when notifyAppWidgetViewDataChanged is called
     @Override
     public void onDataSetChanged() {
     }

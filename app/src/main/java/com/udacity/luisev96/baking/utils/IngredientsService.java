@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 
 import com.udacity.luisev96.baking.R;
+import com.udacity.luisev96.baking.domain.Recipe;
 
 /**
  * An {@link IntentService} subclass for handling asynchronous task requests in
@@ -16,6 +17,7 @@ public class IngredientsService extends IntentService {
 
     public static final String ACTION_UPDATE_WIDGETS = "com.udacity.luisev96.baking.widget";
     public static final String WIDGET_ID = "widget_id";
+    static final String RECIPE = "recipe";
 
     public IngredientsService() {
         super("IngredientsService");
@@ -27,10 +29,11 @@ public class IngredientsService extends IntentService {
      *
      * @see IntentService
      */
-    public static void startActionUpdateWidgets(Context context, int appWidgetId) {
+    public static void startActionUpdateWidgets(Context context, int appWidgetId, Recipe recipe) {
         Intent intent = new Intent(context, IngredientsService.class);
         intent.setAction(ACTION_UPDATE_WIDGETS);
         intent.putExtra(WIDGET_ID, appWidgetId);
+        intent.putExtra(RECIPE, recipe);
         context.startService(intent);
     }
 
@@ -43,10 +46,10 @@ public class IngredientsService extends IntentService {
             final String action = intent.getAction();
             if (ACTION_UPDATE_WIDGETS.equals(action)) {
                 int appWidgetId = intent.getIntExtra(WIDGET_ID, AppWidgetManager.INVALID_APPWIDGET_ID);
-
+                Recipe recipe = (Recipe) intent.getSerializableExtra(RECIPE);
                 if (appWidgetId == AppWidgetManager.INVALID_APPWIDGET_ID)
                     return;
-                handleActionUpdateRecipeWidgets();
+                handleActionUpdateRecipeWidgets(recipe);
             }
         }
     }
@@ -54,10 +57,12 @@ public class IngredientsService extends IntentService {
     /**
      * Handle action UpdateIngredientsWidgets in the provided background thread
      */
-    private void handleActionUpdateRecipeWidgets() {
-        AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(this);
-        int[] appWidgetIds = appWidgetManager.getAppWidgetIds(new ComponentName(this, WidgetProvider.class));
+    private void handleActionUpdateRecipeWidgets(Recipe recipe) {
+        AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(IngredientsService.this);
+        int[] appWidgetIds = appWidgetManager.getAppWidgetIds(new ComponentName(IngredientsService.this, WidgetProvider.class));
+        //Trigger data update to handle the ListView widgets and force a data refresh
         appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetIds, R.id.list_view);
-        WidgetProvider.updateWidgets(this, appWidgetManager, 1, appWidgetIds);
+        //Now update all widgets
+        WidgetProvider.updateWidgets(IngredientsService.this, appWidgetManager, appWidgetIds, recipe);
     }
 }

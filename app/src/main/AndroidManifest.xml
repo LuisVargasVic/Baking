@@ -37,6 +37,7 @@
 
         <activity android:name=".presentation.detail.DetailActivity" />
         <activity android:name=".presentation.detail.MasterDetailActivity" />
+        <activity android:name=".presentation.widget.WidgetActivity" />
         <activity android:name=".presentation.recipes.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

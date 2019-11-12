@@ -38,6 +38,6 @@ public interface BakingDao {
     @Query("SELECT * FROM DatabaseStep WHERE recipe_id = :recipeId AND step = :step_id")
     LiveData<DatabaseStep> getStep(int recipeId, int step_id);
 
-    @Query("SELECT * FROM DatabaseIngredient")
-    LiveData<List<DatabaseIngredient>> getIngredients();
+    @Query("SELECT * FROM DatabaseRecipe WHERE app_widget_id = :appWidgetId")
+    LiveData<DatabaseRecipe> getRecipe(int appWidgetId);
 }
