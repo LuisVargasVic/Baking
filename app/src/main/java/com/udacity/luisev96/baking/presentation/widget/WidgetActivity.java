@@ -124,7 +124,7 @@ public class WidgetActivity extends AppCompatActivity implements RemoteListener,
     @Override
     public void postWidgetExecute(Recipe recipe) {
         AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(this);
-        WidgetProvider.updateWidget(this, appWidgetManager, mAppWidgetId, recipe);
+        WidgetProvider.updateWidget(this, appWidgetManager, recipe);
         Intent widgetIntent = new Intent();
         widgetIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, mAppWidgetId);
         setResult(RESULT_OK, widgetIntent);

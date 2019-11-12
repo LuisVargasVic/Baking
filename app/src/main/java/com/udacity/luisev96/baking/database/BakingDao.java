@@ -27,7 +27,7 @@ public interface BakingDao {
     LiveData<List<DatabaseStep>> getSteps(int recipeId);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    void insertStep(DatabaseStep review);
+    void insertStep(DatabaseStep databaseStep);
 
     @Query("DELETE FROM DatabaseIngredient")
     void deleteIngredients();
@@ -38,6 +38,12 @@ public interface BakingDao {
     @Query("SELECT * FROM DatabaseStep WHERE recipe_id = :recipeId AND step = :step_id")
     LiveData<DatabaseStep> getStep(int recipeId, int step_id);
 
-    @Query("SELECT * FROM DatabaseRecipe WHERE app_widget_id = :appWidgetId")
-    LiveData<DatabaseRecipe> getRecipe(int appWidgetId);
+    @Query("SELECT * FROM DatabaseWidget WHERE id = :appWidgetId")
+    LiveData<DatabaseWidget> getWidget(int appWidgetId);
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    void insertWidget(DatabaseWidget databaseWidget);
+
+    @Query("DELETE FROM DatabaseWidget WHERE id = :appWidgetId")
+    void deleteWidget(int appWidgetId);
 }

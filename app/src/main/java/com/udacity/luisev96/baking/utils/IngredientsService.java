@@ -15,8 +15,7 @@ import com.udacity.luisev96.baking.domain.Recipe;
  */
 public class IngredientsService extends IntentService {
 
-    public static final String ACTION_UPDATE_WIDGETS = "com.udacity.luisev96.baking.widget";
-    public static final String WIDGET_ID = "widget_id";
+    public static final String ACTION_UPDATE_WIDGETS = "com.udacity.luisev96.baking.action.widget";
     static final String RECIPE = "recipe";
 
     public IngredientsService() {
@@ -29,10 +28,9 @@ public class IngredientsService extends IntentService {
      *
      * @see IntentService
      */
-    public static void startActionUpdateWidgets(Context context, int appWidgetId, Recipe recipe) {
+    public static void startActionUpdateWidgets(Context context, Recipe recipe) {
         Intent intent = new Intent(context, IngredientsService.class);
         intent.setAction(ACTION_UPDATE_WIDGETS);
-        intent.putExtra(WIDGET_ID, appWidgetId);
         intent.putExtra(RECIPE, recipe);
         context.startService(intent);
     }
@@ -45,10 +43,7 @@ public class IngredientsService extends IntentService {
         if (intent != null) {
             final String action = intent.getAction();
             if (ACTION_UPDATE_WIDGETS.equals(action)) {
-                int appWidgetId = intent.getIntExtra(WIDGET_ID, AppWidgetManager.INVALID_APPWIDGET_ID);
                 Recipe recipe = (Recipe) intent.getSerializableExtra(RECIPE);
-                if (appWidgetId == AppWidgetManager.INVALID_APPWIDGET_ID)
-                    return;
                 handleActionUpdateRecipeWidgets(recipe);
             }
         }
@@ -63,6 +58,6 @@ public class IngredientsService extends IntentService {
         //Trigger data update to handle the ListView widgets and force a data refresh
         appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetIds, R.id.list_view);
         //Now update all widgets
-        WidgetProvider.updateWidget(IngredientsService.this, appWidgetManager, recipe.getApp_widget_id(), recipe);
+        WidgetProvider.updateWidget(IngredientsService.this, appWidgetManager, recipe);
     }
 }

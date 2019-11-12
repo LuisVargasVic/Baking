@@ -6,7 +6,6 @@ import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Build;
 import android.util.Log;
 import android.widget.RemoteViews;
@@ -26,13 +25,13 @@ import com.udacity.luisev96.baking.domain.Recipe;
 public class WidgetProvider extends AppWidgetProvider {
 
     private static final String TAG = WidgetProvider.class.getSimpleName();
+    static final String APP_WIDGET_ID = "app_widget_id";
 
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
-    public static void updateWidget(Context context, AppWidgetManager appWidgetManager, int appWidgetId, Recipe recipe) {
-        // Get current width to decide on single plant vs garden grid view
+    public static void updateWidget(Context context, AppWidgetManager appWidgetManager, Recipe recipe) {
         RemoteViews rv;
         rv = getRecyclerRemoteView(context, recipe);
-        appWidgetManager.updateAppWidget(appWidgetId, rv);
+        appWidgetManager.updateAppWidget(recipe.getApp_widget_id(), rv);
     }
 
     /**
@@ -42,12 +41,10 @@ public class WidgetProvider extends AppWidgetProvider {
      * @return The RemoteViews for the ListView mode widget
      */
     private static RemoteViews getRecyclerRemoteView(Context context, Recipe recipe) {
-        Log.wtf("recipe", recipe.getName());
-        Log.wtf("appWid", String.valueOf(recipe.getApp_widget_id()));
         RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.widget_list_view);
         // Set the ListWidgetService intent to act as the adapter for the ListView
         Intent intent = new Intent(context, ListWidgetService.class);
-        intent.setData(Uri.fromParts("content", String.valueOf(recipe.getApp_widget_id()), null));
+        intent.putExtra(APP_WIDGET_ID, recipe.getApp_widget_id());
         views.setTextViewText(R.id.tv_recipe_name, recipe.getName());
         views.setRemoteAdapter(R.id.list_view, intent);
         // Handle empty ingredients
@@ -57,20 +54,29 @@ public class WidgetProvider extends AppWidgetProvider {
 
     @Override
     public void onUpdate(final Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
-        for (final int appWidgetId : appWidgetIds) {
+        for (int appWidgetId : appWidgetIds) {
             BakingDatabase database = BakingDatabase.getInstance(context);
-            Log.d(TAG, "Actively retrieving the ingredients from the DataBase");
+            Log.d(TAG, "Actively retrieving the widget from the DataBase");
             BakingRepository repository = new BakingRepository(database);
             repository.getRecipe(appWidgetId).observeForever(new Observer<Recipe>() {
                 @Override
                 public void onChanged(@Nullable Recipe recipe) {
                     if (recipe != null) {
-                        IngredientsService.startActionUpdateWidgets(context, appWidgetId, recipe);
+                        IngredientsService.startActionUpdateWidgets(context, recipe);
                     }
                 }
             });
-
         }
     }
 
+    @Override
+    public void onDeleted(Context context, int[] appWidgetIds) {
+        super.onDeleted(context, appWidgetIds);
+        for (int appWidgetId : appWidgetIds) {
+            BakingDatabase database = BakingDatabase.getInstance(context);
+            Log.d(TAG, "Actively removing widget from the DataBase");
+            BakingRepository repository = new BakingRepository(database);
+            repository.deleteWidget(appWidgetId);
+        }
+    }
 }

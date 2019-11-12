@@ -10,7 +10,8 @@ import androidx.room.RoomDatabase;
 @Database(entities = {
         DatabaseRecipe.class,
         DatabaseIngredient.class,
-        DatabaseStep.class
+        DatabaseStep.class,
+        DatabaseWidget.class
 }, version = 1, exportSchema = false)
 public abstract class BakingDatabase extends RoomDatabase {
 

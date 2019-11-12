@@ -18,10 +18,12 @@ import com.udacity.luisev96.baking.domain.Recipe;
 
 import java.util.List;
 
+import static com.udacity.luisev96.baking.utils.WidgetProvider.APP_WIDGET_ID;
+
 public class ListWidgetService extends RemoteViewsService {
     @Override
     public RemoteViewsFactory onGetViewFactory(Intent intent) {
-        int appWidgetId = Integer.valueOf(intent.getData().getSchemeSpecificPart());
+        int appWidgetId = intent.getIntExtra(APP_WIDGET_ID, -1);
         return new ListRemoteViewsFactory(this.getApplicationContext(), appWidgetId);
     }
 }
@@ -43,9 +45,8 @@ class ListRemoteViewsFactory implements RemoteViewsService.RemoteViewsFactory {
         final BakingRepository repository;
 
         BakingDatabase database = BakingDatabase.getInstance(mContext);
-        Log.d(TAG, "Actively retrieving the ingredients from the DataBase");
+        Log.d(TAG, "Actively retrieving the widget with the ingredients from the DataBase");
         repository = new BakingRepository(database);
-
         repository.getRecipe(mAppWidgetId).observeForever(new Observer<Recipe>() {
             @Override
             public void onChanged(final Recipe recipe) {
@@ -59,7 +60,7 @@ class ListRemoteViewsFactory implements RemoteViewsService.RemoteViewsFactory {
                             AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(mContext);
                             int[] appWidgetIds = appWidgetManager.getAppWidgetIds(new ComponentName(mContext, WidgetProvider.class));
                             appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetIds, R.id.list_view);
-                            WidgetProvider.updateWidget(mContext, appWidgetManager, recipe.getApp_widget_id(), recipe);
+                            WidgetProvider.updateWidget(mContext, appWidgetManager, recipe);
                         }
                     });
                 }
@@ -85,8 +86,8 @@ class ListRemoteViewsFactory implements RemoteViewsService.RemoteViewsFactory {
     /**
      * This method acts like the onBindViewHolder method in an Adapter
      *
-     * @param position The current position of the item in the GridView to be displayed
-     * @return The RemoteViews object to display for the provided postion
+     * @param position The current position of the item in the ListView to be displayed
+     * @return The RemoteViews object to display for the provided position
      */
     @Override
     public RemoteViews getViewAt(int position) {

@@ -8,13 +8,15 @@ import com.udacity.luisev96.baking.database.BakingDatabase;
 import com.udacity.luisev96.baking.database.DatabaseIngredient;
 import com.udacity.luisev96.baking.database.DatabaseRecipe;
 import com.udacity.luisev96.baking.database.DatabaseStep;
+import com.udacity.luisev96.baking.database.DatabaseWidget;
 import com.udacity.luisev96.baking.domain.Ingredient;
 import com.udacity.luisev96.baking.domain.Recipe;
 import com.udacity.luisev96.baking.domain.Step;
 import com.udacity.luisev96.baking.remote.listeners.RemoteListener;
 import com.udacity.luisev96.baking.remote.listeners.WidgetListener;
 import com.udacity.luisev96.baking.remote.tasks.BakingTask;
-import com.udacity.luisev96.baking.remote.tasks.WidgetTask;
+import com.udacity.luisev96.baking.remote.tasks.WidgetDeleteTask;
+import com.udacity.luisev96.baking.remote.tasks.WidgetInsertTask;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -44,7 +46,7 @@ public class BakingRepository {
     }
 
     public void insertWidget(Recipe recipe, WidgetListener widgetListener) {
-        new WidgetTask(mBakingDatabase, widgetListener).execute(recipe);
+        new WidgetInsertTask(mBakingDatabase, widgetListener).execute(recipe);
     }
 
     public LiveData<List<Recipe>> getRecipes() {
@@ -59,7 +61,7 @@ public class BakingRepository {
                             recipes.add(new Recipe(
                                             databaseRecipe.getId(),
                                             databaseRecipe.getName(),
-                                            databaseRecipe.getApp_widget_id()
+                                            0
                                     )
                             );
                         }
@@ -139,20 +141,24 @@ public class BakingRepository {
     }
 
     public LiveData<Recipe> getRecipe(int appWidgetId) {
-        return Transformations.map(mBakingDatabase.bakingDao().getRecipe(appWidgetId),
-                new Function<DatabaseRecipe, Recipe>() {
+        return Transformations.map(mBakingDatabase.bakingDao().getWidget(appWidgetId),
+                new Function<DatabaseWidget, Recipe>() {
                     @Override
-                    public Recipe apply(DatabaseRecipe databaseRecipe) {
-                        if (databaseRecipe != null) {
+                    public Recipe apply(DatabaseWidget databaseWidget) {
+                        if (databaseWidget != null) {
                             return new Recipe(
-                                    databaseRecipe.getId(),
-                                    databaseRecipe.getName(),
-                                    databaseRecipe.getApp_widget_id()
+                                    databaseWidget.getRecipe_id(),
+                                    databaseWidget.getName(),
+                                    databaseWidget.getId()
                             );
                         } else {
                             return null;
                         }
                     }
                 });
+    }
+
+    public void deleteWidget(int appWidgetId) {
+        new WidgetDeleteTask(mBakingDatabase).execute(appWidgetId);
     }
 }
