@@ -3,7 +3,6 @@ package com.udacity.luisev96.baking.utils;
 import androidx.annotation.Nullable;
 import androidx.test.espresso.IdlingResource;
 
-import java.util.Objects;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
@@ -43,7 +42,7 @@ public class SimpleIdlingResource implements IdlingResource {
     public void setIdleState(boolean isIdleNow) {
         mIsIdleNow.set(isIdleNow);
         if (isIdleNow && mCallback != null) {
-            Objects.requireNonNull(mCallback).onTransitionToIdle();
+            mCallback.onTransitionToIdle();
         }
     }
 }
