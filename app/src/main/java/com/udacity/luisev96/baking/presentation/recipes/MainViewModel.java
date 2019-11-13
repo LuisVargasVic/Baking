@@ -16,8 +16,8 @@ import java.util.List;
 public class MainViewModel extends AndroidViewModel {
 
     private static final String TAG = MainViewModel.class.getSimpleName();
-    private BakingRepository repository;
-    private LiveData<List<Recipe>> recipes;
+    private final BakingRepository repository;
+    private final LiveData<List<Recipe>> recipes;
 
     public MainViewModel(Application application) {
         super(application);

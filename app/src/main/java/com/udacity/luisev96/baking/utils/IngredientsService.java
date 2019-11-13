@@ -15,8 +15,8 @@ import com.udacity.luisev96.baking.domain.Recipe;
  */
 public class IngredientsService extends IntentService {
 
-    public static final String ACTION_UPDATE_WIDGETS = "com.udacity.luisev96.baking.action.widget";
-    static final String RECIPE = "recipe";
+    private static final String ACTION_UPDATE_WIDGETS = "com.udacity.luisev96.baking.action.widget";
+    private static final String RECIPE = "recipe";
 
     public IngredientsService() {
         super("IngredientsService");
@@ -36,7 +36,7 @@ public class IngredientsService extends IntentService {
     }
 
     /**
-     * @param intent
+     * @param intent intent
      */
     @Override
     protected void onHandleIntent(Intent intent) {
@@ -57,7 +57,7 @@ public class IngredientsService extends IntentService {
         int[] appWidgetIds = appWidgetManager.getAppWidgetIds(new ComponentName(IngredientsService.this, WidgetProvider.class));
         //Trigger data update to handle the ListView widgets and force a data refresh
         appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetIds, R.id.list_view);
-        //Now update all widgets
+        //Now update widget
         WidgetProvider.updateWidget(IngredientsService.this, appWidgetManager, recipe);
     }
 }

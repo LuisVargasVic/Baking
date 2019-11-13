@@ -17,8 +17,8 @@ import java.util.List;
 public class WidgetViewModel extends AndroidViewModel {
 
     private static final String TAG = WidgetViewModel.class.getSimpleName();
-    private BakingRepository repository;
-    private LiveData<List<Recipe>> recipes;
+    private final BakingRepository repository;
+    private final LiveData<List<Recipe>> recipes;
 
     public WidgetViewModel(Application application) {
         super(application);
@@ -28,11 +28,11 @@ public class WidgetViewModel extends AndroidViewModel {
         recipes = repository.getRecipes();
     }
 
-    public void refresh(RemoteListener remoteListener) {
+    void refresh(RemoteListener remoteListener) {
         repository.refresh(remoteListener);
     }
 
-    public void insertWidget(Recipe recipe, WidgetListener widgetListener) {
+    void insertWidget(Recipe recipe, WidgetListener widgetListener) {
         repository.insertWidget(recipe, widgetListener);
     }
 

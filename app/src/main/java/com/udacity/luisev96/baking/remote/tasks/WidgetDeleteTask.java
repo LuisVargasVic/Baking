@@ -6,7 +6,7 @@ import com.udacity.luisev96.baking.database.BakingDatabase;
 
 public class WidgetDeleteTask extends AsyncTask<Integer, Void, Boolean> {
 
-    private BakingDatabase mBakingDatabase;
+    private final BakingDatabase mBakingDatabase;
 
     public WidgetDeleteTask(BakingDatabase bakingDatabase) {
         mBakingDatabase = bakingDatabase;

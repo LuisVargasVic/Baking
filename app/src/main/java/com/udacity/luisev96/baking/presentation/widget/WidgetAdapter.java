@@ -52,7 +52,7 @@ public class WidgetAdapter extends RecyclerView.Adapter<WidgetAdapter.RecipesVie
 
     class RecipesViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-        RecipeItemBinding mRecipeItemBinding;
+        final RecipeItemBinding mRecipeItemBinding;
         Recipe mRecipe;
 
         RecipesViewHolder(@NonNull RecipeItemBinding recipeItemBinding) {

@@ -99,6 +99,7 @@ public class MainActivity extends AppCompatActivity implements RemoteListener, C
 
     @Override
     public void preExecute() {
+        assert mIdlingResource != null;
         mIdlingResource.setIdleState(false);
         activityMainBinding.pb.setVisibility(View.VISIBLE);
         activityMainBinding.message.setVisibility(View.GONE);
@@ -106,7 +107,7 @@ public class MainActivity extends AppCompatActivity implements RemoteListener, C
     }
 
     @Override
-    public void postExecute(Boolean data) {
+    public void postExecute() {
         viewModel.getRecipes().observe(this, new Observer<List<Recipe>>() {
             @Override
             public void onChanged(@Nullable List<Recipe> recipes) {
@@ -121,6 +122,7 @@ public class MainActivity extends AppCompatActivity implements RemoteListener, C
                     activityMainBinding.message.setVisibility(View.VISIBLE);
                     activityMainBinding.rvRecipes.setVisibility(View.GONE);
                 }
+                assert mIdlingResource != null;
                 mIdlingResource.setIdleState(true);
             }
         });

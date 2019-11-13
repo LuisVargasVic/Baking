@@ -26,96 +26,97 @@ public class ListWidgetService extends RemoteViewsService {
         int appWidgetId = intent.getIntExtra(APP_WIDGET_ID, -1);
         return new ListRemoteViewsFactory(this.getApplicationContext(), appWidgetId);
     }
-}
 
-class ListRemoteViewsFactory implements RemoteViewsService.RemoteViewsFactory {
+    static class ListRemoteViewsFactory implements RemoteViewsService.RemoteViewsFactory {
 
-    private static final String TAG = ListRemoteViewsFactory.class.getSimpleName();
-    private int mAppWidgetId;
-    private Context mContext;
-    private List<Ingredient> mIngredients;
+        private static final String TAG = ListRemoteViewsFactory.class.getSimpleName();
+        private final int mAppWidgetId;
+        private final Context mContext;
+        private List<Ingredient> mIngredients;
 
-    ListRemoteViewsFactory(Context applicationContext, int appWidgetId) {
-        mContext = applicationContext;
-        mAppWidgetId = appWidgetId;
-    }
+        ListRemoteViewsFactory(Context applicationContext, int appWidgetId) {
+            mContext = applicationContext;
+            mAppWidgetId = appWidgetId;
+        }
 
-    @Override
-    public void onCreate() {
-        final BakingRepository repository;
+        @Override
+        public void onCreate() {
+            final BakingRepository repository;
 
-        BakingDatabase database = BakingDatabase.getInstance(mContext);
-        Log.d(TAG, "Actively retrieving the widget with the ingredients from the DataBase");
-        repository = new BakingRepository(database);
-        repository.getRecipe(mAppWidgetId).observeForever(new Observer<Recipe>() {
-            @Override
-            public void onChanged(final Recipe recipe) {
-                if (recipe != null) {
-                    repository.getIngredients(recipe.getId()).observeForever(new Observer<List<Ingredient>>() {
+            BakingDatabase database = BakingDatabase.getInstance(mContext);
+            Log.d(TAG, "Actively retrieving the widget with the ingredients from the DataBase");
+            repository = new BakingRepository(database);
+            repository.getRecipe(mAppWidgetId).observeForever(new Observer<Recipe>() {
+                @Override
+                public void onChanged(final Recipe recipe) {
+                    if (recipe != null) {
+                        repository.getIngredients(recipe.getId()).observeForever(new Observer<List<Ingredient>>() {
 
-                        @Override
-                        public void onChanged(List<Ingredient> ingredients) {
-                            mIngredients = ingredients;
+                            @Override
+                            public void onChanged(List<Ingredient> ingredients) {
+                                mIngredients = ingredients;
 
-                            AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(mContext);
-                            int[] appWidgetIds = appWidgetManager.getAppWidgetIds(new ComponentName(mContext, WidgetProvider.class));
-                            appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetIds, R.id.list_view);
-                            WidgetProvider.updateWidget(mContext, appWidgetManager, recipe);
-                        }
-                    });
+                                AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(mContext);
+                                int[] appWidgetIds = appWidgetManager.getAppWidgetIds(new ComponentName(mContext, WidgetProvider.class));
+                                appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetIds, R.id.list_view);
+                                WidgetProvider.updateWidget(mContext, appWidgetManager, recipe);
+                            }
+                        });
+                    }
                 }
-            }
-        });
+            });
+        }
+
+        @Override
+        public void onDataSetChanged() {
+        }
+
+        @Override
+        public void onDestroy() {
+
+        }
+
+        @Override
+        public int getCount() {
+            if (mIngredients == null) return 0;
+            return mIngredients.size();
+        }
+
+        /**
+         * This method acts like the onBindViewHolder method in an Adapter
+         *
+         * @param position The current position of the item in the ListView to be displayed
+         * @return The RemoteViews object to display for the provided position
+         */
+        @Override
+        public RemoteViews getViewAt(int position) {
+            if (mIngredients == null || mIngredients.isEmpty()) return null;
+            RemoteViews views = new RemoteViews(mContext.getPackageName(), R.layout.ingredient_widget);
+            views.setTextViewText(R.id.tv_name, mIngredients.get(position).getIngredient());
+            views.setTextViewText(R.id.tv_quantity, String.valueOf(mIngredients.get(position).getQuantity()));
+            views.setTextViewText(R.id.tv_measure, mIngredients.get(position).getMeasure());
+            return views;
+        }
+
+        @Override
+        public RemoteViews getLoadingView() {
+            return null;
+        }
+
+        @Override
+        public int getViewTypeCount() {
+            return 1; // Treat all items in the ListView the same
+        }
+
+        @Override
+        public long getItemId(int i) {
+            return i;
+        }
+
+        @Override
+        public boolean hasStableIds() {
+            return true;
+        }
     }
 
-    @Override
-    public void onDataSetChanged() {
-    }
-
-    @Override
-    public void onDestroy() {
-
-    }
-
-    @Override
-    public int getCount() {
-        if (mIngredients == null) return 0;
-        return mIngredients.size();
-    }
-
-    /**
-     * This method acts like the onBindViewHolder method in an Adapter
-     *
-     * @param position The current position of the item in the ListView to be displayed
-     * @return The RemoteViews object to display for the provided position
-     */
-    @Override
-    public RemoteViews getViewAt(int position) {
-        if (mIngredients == null || mIngredients.isEmpty()) return null;
-        RemoteViews views = new RemoteViews(mContext.getPackageName(), R.layout.ingredient_widget);
-        views.setTextViewText(R.id.tv_name, mIngredients.get(position).getIngredient());
-        views.setTextViewText(R.id.tv_quantity, String.valueOf(mIngredients.get(position).getQuantity()));
-        views.setTextViewText(R.id.tv_measure, mIngredients.get(position).getMeasure());
-        return views;
-    }
-
-    @Override
-    public RemoteViews getLoadingView() {
-        return null;
-    }
-
-    @Override
-    public int getViewTypeCount() {
-        return 1; // Treat all items in the ListView the same
-    }
-
-    @Override
-    public long getItemId(int i) {
-        return i;
-    }
-
-    @Override
-    public boolean hasStableIds() {
-        return true;
-    }
 }

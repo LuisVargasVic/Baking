@@ -18,7 +18,7 @@ import java.util.List;
 public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ListViewHolder> {
 
     private List<Step> mStepsList = new ArrayList<>();
-    private ListFragment.OnItemClickListener mCallback;
+    private final ListFragment.OnItemClickListener mCallback;
 
     ListAdapter(ListFragment.OnItemClickListener callback) {
         mCallback = callback;
@@ -57,8 +57,7 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ListViewHolder
 
     class ListViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-        ListItemBinding mListItemBinding;
-        Step mStep;
+        final ListItemBinding mListItemBinding;
         int mPosition = 0;
 
         ListViewHolder(@NonNull ListItemBinding listItemBinding) {
@@ -68,7 +67,6 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ListViewHolder
         }
 
         void bind(Step step) {
-            mStep = step;
             mListItemBinding.tvName.setText(step.getShortDescription());
             mPosition = step.getStep();
         }

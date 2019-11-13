@@ -18,31 +18,16 @@ public class Ingredient {
         return quantity;
     }
 
-    public void setQuantity(Double quantity) {
-        this.quantity = quantity;
-    }
-
     public String getMeasure() {
         return measure;
-    }
-
-    public void setMeasure(String measure) {
-        this.measure = measure;
     }
 
     public String getIngredient() {
         return ingredient;
     }
 
-    public void setIngredient(String ingredient) {
-        this.ingredient = ingredient;
-    }
-
     public int getRecipe_id() {
         return recipe_id;
     }
 
-    public void setRecipe_id(int recipe_id) {
-        this.recipe_id = recipe_id;
-    }
 }

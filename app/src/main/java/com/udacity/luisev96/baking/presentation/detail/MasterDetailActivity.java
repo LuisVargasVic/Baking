@@ -22,7 +22,7 @@ public class MasterDetailActivity extends AppCompatActivity implements ListFragm
     public static final String POSITION = "position";
     public static final String TOTAL = "total";
     private FragmentManager fragmentManager;
-    Recipe recipe;
+    private Recipe recipe;
 
     // Variable to track whether to display a two-pane or single-pane UI
     // A single-pane display refers to phone screens, and two-pane to larger tablet screens

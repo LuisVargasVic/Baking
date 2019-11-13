@@ -13,7 +13,7 @@ import com.udacity.luisev96.baking.domain.Step;
 public class StepViewModel extends AndroidViewModel {
 
     private static final String TAG = StepViewModel.class.getSimpleName();
-    private BakingRepository repository;
+    private final BakingRepository repository;
     private LiveData<Step> step;
 
     public StepViewModel(Application application) {

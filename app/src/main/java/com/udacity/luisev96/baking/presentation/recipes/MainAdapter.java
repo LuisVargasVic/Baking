@@ -23,7 +23,7 @@ import static com.udacity.luisev96.baking.presentation.detail.MasterDetailActivi
 public class MainAdapter extends RecyclerView.Adapter<MainAdapter.RecipesViewHolder> {
 
     private List<Recipe> mRecipesList = new ArrayList<>();
-    private Context mContext;
+    private final Context mContext;
 
     MainAdapter(Context context) {
         mContext = context;
@@ -53,7 +53,7 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.RecipesViewHol
 
     class RecipesViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-        RecipeItemBinding mRecipeItemBinding;
+        final RecipeItemBinding mRecipeItemBinding;
         Recipe mRecipe;
 
         RecipesViewHolder(@NonNull RecipeItemBinding recipeItemBinding) {

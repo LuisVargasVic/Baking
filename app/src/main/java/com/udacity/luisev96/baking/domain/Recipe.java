@@ -18,23 +18,12 @@ public class Recipe implements Serializable {
         return id;
     }
 
-    public void setId(int id) {
-        this.id = id;
-    }
-
     public String getName() {
         return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public int getApp_widget_id() {
         return app_widget_id;
     }
 
-    public void setApp_widget_id(int app_widget_id) {
-        this.app_widget_id = app_widget_id;
-    }
 }

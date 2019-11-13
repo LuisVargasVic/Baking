@@ -10,8 +10,8 @@ import com.udacity.luisev96.baking.remote.listeners.WidgetListener;
 
 public class WidgetInsertTask extends AsyncTask<Recipe, Void, Recipe> {
 
-    private BakingDatabase mBakingDatabase;
-    private WidgetListener mWidgetDatabase;
+    private final BakingDatabase mBakingDatabase;
+    private final WidgetListener mWidgetDatabase;
 
     public WidgetInsertTask(BakingDatabase bakingDatabase, WidgetListener widgetListener) {
         mBakingDatabase = bakingDatabase;

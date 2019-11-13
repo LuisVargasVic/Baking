@@ -17,7 +17,7 @@ public abstract class BakingDatabase extends RoomDatabase {
 
     private static final String LOG_TAG = BakingDatabase.class.getSimpleName();
     private static final Object LOCK = new Object();
-    private static final String DATABASE_NAME = "movies";
+    private static final String DATABASE_NAME = "recipes";
     private static BakingDatabase sInstance;
 
     public static BakingDatabase getInstance(Context context) {

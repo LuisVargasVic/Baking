@@ -8,4 +8,6 @@
     <string name="screen">Phone</string>
     <string name="empty">Empty recipes</string>
     <string name="widget">Choose recipe for widget</string>
+    <string name="button_back">Button Back</string>
+    <string name="button_next">Button Next</string>
 </resources>

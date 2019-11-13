@@ -51,8 +51,7 @@ public class IngredientsAdapter extends RecyclerView.Adapter<IngredientsAdapter.
 
     class ListViewHolder extends RecyclerView.ViewHolder {
 
-        IngredientItemBinding mIngredientItemBinding;
-        Ingredient mIngredient;
+        final IngredientItemBinding mIngredientItemBinding;
 
         ListViewHolder(@NonNull IngredientItemBinding ingredientItemBinding) {
             super(ingredientItemBinding.getRoot());
@@ -60,7 +59,6 @@ public class IngredientsAdapter extends RecyclerView.Adapter<IngredientsAdapter.
         }
 
         void bind(Ingredient ingredient) {
-            mIngredient = ingredient;
             mIngredientItemBinding.tvName.setText(ingredient.getIngredient());
             mIngredientItemBinding.tvQuantity.setText(String.valueOf(ingredient.getQuantity()));
             mIngredientItemBinding.tvMeasure.setText(ingredient.getMeasure());

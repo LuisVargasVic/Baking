@@ -96,7 +96,7 @@ public class WidgetActivity extends AppCompatActivity implements RemoteListener,
     }
 
     @Override
-    public void postExecute(Boolean data) {
+    public void postExecute() {
         viewModel.getRecipes().observe(this, new Observer<List<Recipe>>() {
             @Override
             public void onChanged(@Nullable List<Recipe> recipes) {

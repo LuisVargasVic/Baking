@@ -29,10 +29,7 @@ import static com.udacity.luisev96.baking.presentation.detail.MasterDetailActivi
 public class IngredientsFragment extends Fragment {
 
     private static final String TAG = IngredientsFragment.class.getSimpleName();
-    private FragmentIngredientsBinding fragmentIngredientsBinding;
-    private IngredientsViewModel viewModel;
     private IngredientsAdapter mAdapter;
-    private int recipeId;
 
     public IngredientsFragment() {
         // Required empty public constructor
@@ -41,7 +38,7 @@ public class IngredientsFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        fragmentIngredientsBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_ingredients, container, false);
+        FragmentIngredientsBinding fragmentIngredientsBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_ingredients, container, false);
 
         // Create the adapter
         mAdapter = new IngredientsAdapter();
@@ -60,15 +57,15 @@ public class IngredientsFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         assert getArguments() != null;
-        recipeId = getArguments().getInt(RECIPE_ID);
+        int recipeId = getArguments().getInt(RECIPE_ID);
 
-        viewModel = ViewModelProviders.of(this).get(IngredientsViewModel.class);
+        IngredientsViewModel viewModel = ViewModelProviders.of(this).get(IngredientsViewModel.class);
         viewModel.init(recipeId);
 
         viewModel.getIngredients().observe(this, new Observer<List<Ingredient>>() {
             @Override
             public void onChanged(@Nullable List<Ingredient> ingredients) {
-                Log.d(TAG, "Updating list of steps from LiveData in ViewModel");
+                Log.d(TAG, "Updating list of ingredients from LiveData in ViewModel");
                 mAdapter.setIngredients(ingredients);
             }
         });

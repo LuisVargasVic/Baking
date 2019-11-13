@@ -104,10 +104,10 @@ public class StepFragment extends Fragment implements ExoPlayer.EventListener {
                             initializePlayer(Uri.parse(step.getThumbnail_url()));
                         }
                     }
-                } catch (NullPointerException exception) {
-                    fragmentStepBinding.tvDescription.setText(R.string.no_data_step);
-                    Log.wtf(TAG, exception.getLocalizedMessage());
                 } catch (Exception exception) {
+                    getActivity().setTitle(R.string.no_data_step);
+                    fragmentStepBinding.playerView.setVisibility(View.GONE);
+                    fragmentStepBinding.tvDescription.setVisibility(View.GONE);
                     Log.wtf(TAG, exception.getLocalizedMessage());
                 }
             }

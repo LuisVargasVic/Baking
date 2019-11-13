@@ -21,10 +21,10 @@ import static com.udacity.luisev96.baking.presentation.detail.MasterDetailActivi
 public class DetailActivity extends AppCompatActivity {
 
     public ActivityDetailBinding activityDetailBinding;
-    boolean ingredients;
-    int position;
-    int recipeId;
-    int total;
+    private boolean ingredients;
+    private int position;
+    private int recipeId;
+    private int total;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

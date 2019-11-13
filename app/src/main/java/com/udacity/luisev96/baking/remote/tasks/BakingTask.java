@@ -24,8 +24,8 @@ import java.util.List;
 
 public class BakingTask extends AsyncTask<URL, Void, Boolean> {
 
-    private BakingDatabase mBakingDatabase;
-    private RemoteListener mRemoteListener;
+    private final BakingDatabase mBakingDatabase;
+    private final RemoteListener mRemoteListener;
     private static final String TAG = BakingTask.class.getSimpleName();
 
     public BakingTask(BakingDatabase bakingDatabase, RemoteListener remoteListener) {
@@ -108,12 +108,12 @@ public class BakingTask extends AsyncTask<URL, Void, Boolean> {
 
     @Override
     protected void onPostExecute(Boolean data) {
-        mRemoteListener.postExecute(data);
+        mRemoteListener.postExecute();
     }
 
     @Override
     protected void onCancelled() {
         super.onCancelled();
-        mRemoteListener.postExecute(false);
+        mRemoteListener.postExecute();
     }
 }

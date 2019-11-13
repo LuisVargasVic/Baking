@@ -15,7 +15,7 @@ import java.util.List;
 public class ListViewModel extends AndroidViewModel {
 
     private static final String TAG = ListViewModel.class.getSimpleName();
-    private BakingRepository repository;
+    private final BakingRepository repository;
     private LiveData<List<Step>> steps;
 
     public ListViewModel(Application application) {

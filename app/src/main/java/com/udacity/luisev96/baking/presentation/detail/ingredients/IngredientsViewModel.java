@@ -15,7 +15,7 @@ import java.util.List;
 public class IngredientsViewModel extends AndroidViewModel {
 
     private static final String TAG = IngredientsViewModel.class.getSimpleName();
-    private BakingRepository repository;
+    private final BakingRepository repository;
     private LiveData<List<Ingredient>> ingredients;
 
     public IngredientsViewModel(Application application) {

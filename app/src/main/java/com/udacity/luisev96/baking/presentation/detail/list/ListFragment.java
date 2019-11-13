@@ -28,11 +28,8 @@ public class ListFragment extends Fragment {
 
     private static final String TAG = ListFragment.class.getSimpleName();
     // Define a new interface OnItemClickListener that triggers a callback in the host activity
-    OnItemClickListener mCallback;
-    private FragmentListBinding fragmentListBinding;
-    private ListViewModel viewModel;
+    private OnItemClickListener mCallback;
     private ListAdapter mAdapter;
-    private int recipeId;
 
     // OnImageClickListener interface, calls a method in the host activity named onImageSelected
     public interface OnItemClickListener {
@@ -41,7 +38,7 @@ public class ListFragment extends Fragment {
 
     // Override onAttach to make sure that the container activity has implemented the callback
     @Override
-    public void onAttach(Context context) {
+    public void onAttach(@NonNull Context context) {
         super.onAttach(context);
 
         // This makes sure that the host activity has implemented the callback interface
@@ -63,7 +60,7 @@ public class ListFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        fragmentListBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_list, container, false);
+        FragmentListBinding fragmentListBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_list, container, false);
 
         // Create the adapter
         mAdapter = new ListAdapter(mCallback);
@@ -82,9 +79,9 @@ public class ListFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         assert getArguments() != null;
-        recipeId = getArguments().getInt(RECIPE_ID);
+        int recipeId = getArguments().getInt(RECIPE_ID);
 
-        viewModel = ViewModelProviders.of(this).get(ListViewModel.class);
+        ListViewModel viewModel = ViewModelProviders.of(this).get(ListViewModel.class);
         viewModel.init(recipeId);
 
         viewModel.getSteps().observe(this, new Observer<List<Step>>() {

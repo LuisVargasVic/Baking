@@ -30,7 +30,7 @@ public class MainActivityScreenTest {
 
     // Rule that provides functional testing of a single activity
     @Rule
-    public ActivityTestRule<MainActivity> mActivityTestRule = new ActivityTestRule<>(MainActivity.class);
+    public final ActivityTestRule<MainActivity> mActivityTestRule = new ActivityTestRule<>(MainActivity.class);
 
     // Registers any resource that needs to be synchronized with Espresso before the test is run.
     @Before
